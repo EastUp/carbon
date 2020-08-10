@@ -1,18 +1,31 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+    }
+}
+
+
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 apply plugin: 'kotlin-android'
-// apply from: 'maven-push.gradle'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion = '29.0.2'
+    compileSdkVersion androidVersion.compileSdk
+    buildToolsVersion androidVersion.buildToolsVersion
 
     buildFeatures.viewBinding = true
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 29
-        versionCode 50
-        versionName "0.17.0"
+        minSdkVersion androidVersion.minSdk
+        targetSdkVersion androidVersion.targetSdk
+        versionCode 1
+        versionName "0.1.0"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -31,14 +44,16 @@ android {
 }
 
 dependencies {
-    api 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.2.0-beta01'
-    implementation 'androidx.gridlayout:gridlayout:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'com.caverock:androidsvg-aar:1.4'
+    implementation deps.kotlin.stdlib
+    implementation deps.support.core_ktx
+    implementation deps.support.app_compat
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta6'
+    implementation deps.support.design
+    implementation deps.support.gridlayout
+    implementation deps.support.recyclerview
+    implementation 'com.caverock:androidsvg-aar:1.4'
     implementation 'com.annimon:stream:1.2.1'
     implementation "androidx.vectordrawable:vectordrawable:1.1.0"
     implementation "androidx.vectordrawable:vectordrawable-animated:1.1.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+apply from: 'carbonbintray.gradle' //这个一定得放在最后,不然bintray.gradle中 task':xxx:javadoc' 会失败
